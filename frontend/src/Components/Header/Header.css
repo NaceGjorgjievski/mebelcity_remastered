@@ -1,0 +1,13 @@
+#navbar {
+  border-bottom: 1px solid gray;
+}
+
+#searchBar {
+  padding-left: 30px;
+}
+
+.flexSpan {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
