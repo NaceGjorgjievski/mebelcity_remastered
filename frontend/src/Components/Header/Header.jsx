@@ -4,7 +4,8 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
-import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
+import UserButton from "./Components/UserButton";
+//import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import logo from "./logo.png";
@@ -40,12 +41,8 @@ const Header = () => {
           </Nav>
           <Nav className="d-flex flex-column">
             <Container className="d-flex justify-content-between">
-              <Nav.Link href="/login">
-                <span className="flexSpan">
-                  <AccountCircleSharpIcon />
-                  Најави се
-                </span>
-              </Nav.Link>
+              <UserButton />
+
               <Nav.Link href="#memes">
                 <span className="flexSpan">
                   <ShoppingCartSharpIcon />

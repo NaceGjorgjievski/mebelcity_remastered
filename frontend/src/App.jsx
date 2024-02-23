@@ -5,6 +5,7 @@ import Home from "./Pages/HomePage/Home";
 import Footer from "./Components/Footer/Footer";
 import Login from "./Pages/LoginPage/Login";
 import Signup from "./Pages/SignupPage/Signup";
+import AddCategory from "./Pages/AddCategoryPage/AddCategory";
 
 function App() {
   return (
@@ -13,12 +14,12 @@ function App() {
         <Header />
         <main>
           <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/admin/addCategory" element={<AddCategory />} />
           </Routes>
         </main>
-
         <Footer />
       </div>
     </BrowserRouter>

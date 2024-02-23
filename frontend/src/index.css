@@ -1,3 +1,8 @@
 * {
   box-sizing: border-box;
 }
+
+.dropdown a {
+  display: flex;
+  align-items: center;
+}
