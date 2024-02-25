@@ -27,6 +27,14 @@ categoryRouter.post(
   })
 );
 
+categoryRouter.get(
+  "/getSubCategories",
+  expressAsyncHandler(async (req, res) => {
+    const subCategories = await SubCategory.find();
+    res.send(subCategories);
+  })
+);
+
 categoryRouter.post(
   "/addSubCategory",
   expressAsyncHandler(async (req, res) => {
@@ -39,9 +47,7 @@ categoryRouter.post(
     if (subCategory)
       res.status(201).send({ message: "New Category Created", subCategory });
     else
-      res
-        .status(404)
-        .send({ message: "Грешка при креирање на подкаегоријата" });
+      res.status(404).send({ message: "Грешка при креирање на подкатегорија" });
   })
 );
 

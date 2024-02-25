@@ -37,6 +37,8 @@ const AddCategory = () => {
       });
       setCategories([...categories, data.category]);
       toast.success("Категоријата е додадена", { position: "bottom-center" });
+      setCategory("");
+      setCategorySlug("");
     } catch (err) {
       toast.error(getError(err), { position: "bottom-center" });
     }
@@ -45,7 +47,7 @@ const AddCategory = () => {
   const addSubCategoryHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/category/addSubCategory", {
+      await axios.post("/api/category/addSubCategory", {
         subCategory,
         subCategorySlug,
         selectedCategory,
@@ -53,6 +55,8 @@ const AddCategory = () => {
       toast.success("Подкатегоријата е додадена", {
         position: "bottom-center",
       });
+      setSubCategory("");
+      setSubCategorySlug("");
     } catch (err) {
       toast.error(getError(err), { position: "bottom-center" });
     }
@@ -86,6 +90,7 @@ const AddCategory = () => {
                   type="text"
                   placeholder="Категорија"
                   required
+                  value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 />
               </Form.Group>
@@ -97,6 +102,7 @@ const AddCategory = () => {
                   type="text"
                   placeholder="slug"
                   required
+                  value={categorySlug}
                   onChange={(e) => setCategorySlug(e.target.value)}
                 />
               </Form.Group>
@@ -134,6 +140,7 @@ const AddCategory = () => {
                   type="text"
                   placeholder="Подкатегорија"
                   required
+                  value={subCategory}
                   onChange={(e) => setSubCategory(e.target.value)}
                 />
               </Form.Group>
@@ -145,6 +152,7 @@ const AddCategory = () => {
                   type="text"
                   placeholder="slug"
                   required
+                  value={subCategorySlug}
                   onChange={(e) => setSubCategorySlug(e.target.value)}
                 />
               </Form.Group>

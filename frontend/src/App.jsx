@@ -6,6 +6,7 @@ import Footer from "./Components/Footer/Footer";
 import Login from "./Pages/LoginPage/Login";
 import Signup from "./Pages/SignupPage/Signup";
 import AddCategory from "./Pages/AddCategoryPage/AddCategory";
+import AddProduct from "./Pages/AddProductPage/AddProduct";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/admin/addCategory" element={<AddCategory />} />
+            <Route path="/admin/addProduct" element={<AddProduct />} />
           </Routes>
         </main>
         <Footer />
