@@ -51,4 +51,59 @@ productRouter.post(
   })
 );
 
+productRouter.get(
+  "/",
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const pageSize = 20;
+    const page = query.page || 1;
+    const category = query.category;
+    const subCategory = query.subCategory;
+    const order = query.order;
+    const search = query.search;
+
+    const searchFilter =
+      search && search.length > 0
+        ? { name: { $regex: search, $options: "i" } }
+        : {};
+    const categoryFilter = category && category !== "all" ? { category } : {};
+    const subCategoryFilter =
+      subCategory && subCategory !== "all" ? { subCategory } : {};
+    const sortOrder =
+      order === "lowFirst"
+        ? { price: 1 }
+        : order === "highFirst"
+        ? { price: -1 }
+        : { createdAt: -1 };
+    const products = await Product.find({
+      ...searchFilter,
+      ...categoryFilter,
+      ...subCategoryFilter,
+    })
+      .sort(sortOrder)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countProducts = await Product.countDocuments({
+      ...searchFilter,
+      ...categoryFilter,
+      ...subCategoryFilter,
+    });
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
+
+    res.status(200).send(query);
+  })
+);
+
+productRouter.delete("/:id", async (req, res) => {
+  const product = await Product.findByIdAndDelete(req.params.id);
+  if (!product) return res.status(404).send("Продуктот не е пронајден");
+  res.status(200).send(product);
+});
+
 export default productRouter;

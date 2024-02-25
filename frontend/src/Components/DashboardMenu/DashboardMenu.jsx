@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const linkStyle = {
   textDecoration: "none",
   width: "100%",
-  fontSize: 24,
+  fontSize: 20,
   color: "white",
   textAlign: "center",
-  marginTop: "5px",
+  marginTop: "10px",
 };
 
 const DashboardMenu = () => {

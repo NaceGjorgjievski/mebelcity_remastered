@@ -3,7 +3,7 @@ import Row from "react-bootstrap/esm/Row";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import DashboardMenu from "../../Components/DashboardMenu/DashboardMenu";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../../Store";
 import { useNavigate } from "react-router-dom";
@@ -97,7 +97,7 @@ const AddProduct = () => {
         setFilteredSubCategories(filtered);
         setSelectedSubCategory(filtered[0]);
       } catch (error) {
-        toast.error(getError(error), { position: "bottom-center" });
+        toast.error(getError(error));
       }
     };
     fetchData();
@@ -105,7 +105,7 @@ const AddProduct = () => {
 
   return (
     <Row style={{ width: "100vw" }}>
-      <Col xs={3} style={{ height: "80vh" }}>
+      <Col xs={2} style={{ height: "80vh" }}>
         <DashboardMenu />
       </Col>
       <Col>
@@ -273,7 +273,6 @@ const AddProduct = () => {
           </Col>
         </Row>
       </Col>
-      <ToastContainer />
     </Row>
   );
 };

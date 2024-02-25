@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import DashboardMenu from "../../Components/DashboardMenu/DashboardMenu";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../../Store";
-import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { getError } from "../../utils";
+import { toast } from "react-toastify";
 
 const AddCategory = () => {
   const navigate = useNavigate();
@@ -36,11 +36,11 @@ const AddCategory = () => {
         categorySlug,
       });
       setCategories([...categories, data.category]);
-      toast.success("Категоријата е додадена", { position: "bottom-center" });
+      toast.success("Категоријата е додадена");
       setCategory("");
       setCategorySlug("");
     } catch (err) {
-      toast.error(getError(err), { position: "bottom-center" });
+      toast.error(getError(err));
     }
   };
 
@@ -52,9 +52,7 @@ const AddCategory = () => {
         subCategorySlug,
         selectedCategory,
       });
-      toast.success("Подкатегоријата е додадена", {
-        position: "bottom-center",
-      });
+      toast.success("Подкатегоријата е додадена");
       setSubCategory("");
       setSubCategorySlug("");
     } catch (err) {
@@ -69,7 +67,7 @@ const AddCategory = () => {
         setCategories(data);
         setSelectedCategory(data[0].categoryName);
       } catch (error) {
-        toast.error(getError(error), { position: "bottom-center" });
+        toast.error(getError(error));
       }
     };
     fetchData();
@@ -77,7 +75,7 @@ const AddCategory = () => {
 
   return (
     <Row style={{ width: "100vw" }}>
-      <Col xs={3} style={{ height: "80vh" }}>
+      <Col xs={2} style={{ height: "80vh" }}>
         <DashboardMenu />
       </Col>
       <Col>
@@ -164,7 +162,6 @@ const AddCategory = () => {
           </Col>
         </Row>
       </Col>
-      <ToastContainer />
     </Row>
   );
 };
