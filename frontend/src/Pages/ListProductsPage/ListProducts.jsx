@@ -35,7 +35,7 @@ const ListProducts = () => {
   const deleteProduct = async (productId) => {
     try {
       const resp = await axios.delete(`/api/products/${productId}`);
-      //setProducts(products.filter((p) => p._id !== productId));
+      setProducts(products.filter((p) => p._id !== productId));
     } catch (err) {
       toast.error(getError(err));
     }
@@ -48,9 +48,20 @@ const ListProducts = () => {
         setCategories(data);
         const resp = await axios.get("/api/category/getSubCategories");
         setSubCategories(resp.data);
+      } catch (error) {
+        toast.error(getError(error));
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const productsResponse = await axios.get(
           `/api/products?page=${page}&search=${search}&category=${category}&subCategory=${subCategory}&order=${order}`
         );
+        console.log(category + " " + subCategory);
         setProducts(productsResponse.data.products);
       } catch (error) {
         toast.error(getError(error));
@@ -100,6 +111,7 @@ const ListProducts = () => {
                     value={category}
                     onChange={(e) => {
                       setCategory(e.target.value);
+                      setSubCategory("all");
                     }}
                   >
                     <option value="all">Категорија</option>

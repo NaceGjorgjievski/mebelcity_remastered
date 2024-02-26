@@ -106,4 +106,37 @@ productRouter.delete("/:id", async (req, res) => {
   res.status(200).send(product);
 });
 
+productRouter.get("/:slug", async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: "Продуктот не е пронајден" });
+  }
+});
+
+productRouter.put(
+  "/edit/:id",
+  expressAsyncHandler(async (req, res) => {
+    const product = await Product.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          name: req.body.name,
+          category: req.body.category,
+          slug: req.body.slug,
+          subCategory: req.body.subCategory,
+          description: req.body.description,
+          price: req.body.price,
+          priceAssembly: req.body.priceAssembly,
+          countInStock: req.body.countInStock,
+        },
+      }
+    );
+    if (product) res.status(200).send(product);
+    else {
+      res.status(404).send({ message: "Product Not Found" });
+    }
+  })
+);
 export default productRouter;

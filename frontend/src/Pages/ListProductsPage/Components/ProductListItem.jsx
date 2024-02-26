@@ -2,8 +2,10 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 const ProductListItem = ({ product, onDelete }) => {
+  const navigate = useNavigate();
   return (
     <ListGroup.Item>
       <Row>
@@ -13,7 +15,9 @@ const ProductListItem = ({ product, onDelete }) => {
         <Col>{product.countInStock}</Col>
         <Col>{product.price}</Col>
         <Col className="d-flex justify-content-around">
-          <Button>Измени</Button>
+          <Button onClick={() => navigate(`/admin/products/${product.slug}`)}>
+            Измени
+          </Button>
           <Button
             variant="danger"
             className="ms-3"
