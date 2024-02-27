@@ -8,7 +8,7 @@ const ProductListItem = ({ product, onDelete }) => {
   const navigate = useNavigate();
   return (
     <ListGroup.Item>
-      <Row>
+      <Row className="align-items-center">
         <Col>{product.name}</Col>
         <Col>{product.category}</Col>
         <Col>{product.subCategory}</Col>

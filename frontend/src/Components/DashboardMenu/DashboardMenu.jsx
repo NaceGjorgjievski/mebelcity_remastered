@@ -30,7 +30,7 @@ const DashboardMenu = () => {
       <Link to={"/admin/products"} style={linkStyle}>
         <div className="dashboard-btn">Производи</div>
       </Link>
-      <Link to={"/admin/products"} style={linkStyle}>
+      <Link to={"/admin/categories"} style={linkStyle}>
         <div className="dashboard-btn">Категории</div>
       </Link>
       <Link to={"/admin/orders"} style={linkStyle}>

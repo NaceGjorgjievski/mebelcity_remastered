@@ -3,7 +3,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 
 const footerStyle = {
-  position: "absolute",
+  //position: "absolute",
   bottom: "0",
   width: "100%",
   borderTop: "1px solid gray",

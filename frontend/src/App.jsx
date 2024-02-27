@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ListProducts from "./Pages/ListProductsPage/ListProducts";
 import EditProduct from "./Pages/EditProductPage/EditProduct";
+import CategoryList from "./Pages/CategoryListPage/CategoryList";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/admin/addProduct" element={<AddProduct />} />
             <Route path="/admin/products" element={<ListProducts />} />
             <Route path="/admin/products/:slug" element={<EditProduct />} />
+            <Route path="/admin/categories" element={<CategoryList />} />
           </Routes>
         </main>
         <Footer />

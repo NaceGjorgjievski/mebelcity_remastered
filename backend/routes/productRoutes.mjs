@@ -1,5 +1,5 @@
 import express, { query } from "express";
-import Product from "../models/productModel.js";
+import Product from "../models/productModel.mjs";
 import multer from "multer";
 import expressAsyncHandler from "express-async-handler";
 
