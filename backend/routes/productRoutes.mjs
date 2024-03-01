@@ -30,12 +30,21 @@ productRouter.post(
       tmp.push(`/uploads/${req.files.images[i].originalname}`);
     }
 
+    let schemaUrl = null;
+    let dimensionUrl = null;
+    if (req.files.dimensionImage != undefined) {
+      dimensionUrl = `/uploads/${req.files.dimensionImage[0].originalname}`;
+    }
+    if (req.files.schemaImage != undefined) {
+      schemaUrl = `/uploads/${req.files.schemaImage[0].originalname}`;
+    }
+
     const newProduct = new Product({
       name: req.body.name,
       slug: req.body.slug,
       images: tmp,
-      dimensionImage: `/uploads/${req.files.dimensionImage[0].originalname}`,
-      schemaImage: `/uploads/${req.files.schemaImage[0].originalname}`,
+      dimensionImage: dimensionUrl,
+      schemaImage: schemaUrl,
       category: req.body.selectedCategory,
       subCategory: req.body.selectedSubCategory,
       description: req.body.description,
@@ -55,7 +64,7 @@ productRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
-    const pageSize = 20;
+    const pageSize = 10;
     const page = query.page || 1;
     const category = query.category;
     const subCategory = query.subCategory;
@@ -95,8 +104,15 @@ productRouter.get(
       page,
       pages: Math.ceil(countProducts / pageSize),
     });
+  })
+);
 
-    res.status(200).send(query);
+productRouter.get(
+  "/popular",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find().sort({ countInStock: 1 }).limit(12);
+    if (products) res.status(200).send(products);
+    else res.status(404).send("No products found");
   })
 );
 

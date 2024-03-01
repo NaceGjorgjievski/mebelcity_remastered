@@ -26,6 +26,7 @@ const CategoryList = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState("");
   const [categories, setCategories] = useState([]);
+  const [collection, setCollection] = useState([]);
   const [refresh, setRefresh] = useState(true);
 
   const editCategoryHandler = async (
@@ -100,13 +101,25 @@ const CategoryList = () => {
         const categoryResponse = await axios.get(
           `/api/category/search?page=${page}&search=${search}`
         );
-        setCategories(categoryResponse.data.result);
+        setCollection(categoryResponse.data.result);
       } catch (error) {
         toast.error(getError(error));
       }
     };
     fetchData();
   }, [page, search, refresh]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get("/api/category/getCategories");
+        setCategories(data);
+      } catch (error) {
+        toast.error(getError(error));
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Row style={{ width: "100vw" }}>
@@ -156,8 +169,8 @@ const CategoryList = () => {
                     <Col>Акции</Col>
                   </Row>
                 </ListGroup.Item>
-                {categories &&
-                  categories.map((category) =>
+                {collection &&
+                  collection.map((category) =>
                     category.categoryName != null ? (
                       <CategoryListItem
                         key={category._id}

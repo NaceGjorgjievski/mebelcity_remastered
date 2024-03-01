@@ -57,7 +57,7 @@ const AddProduct = () => {
     formData.append("name", name);
     formData.append("slug", slug);
     formData.append("selectedCategory", selectedCategory);
-    formData.append("selectedSubCategory", selectedSubCategory.subCategoryName);
+    formData.append("selectedSubCategory", selectedSubCategory);
     formData.append("description", description);
     formData.append("price", price);
     formData.append("priceAssembly", priceAssembly);
@@ -81,6 +81,7 @@ const AddProduct = () => {
   const updateCurrentSubcategories = (selectedCat) => {
     let filtered = subCategories.filter((s) => s.category === selectedCat);
     setFilteredSubCategories(filtered);
+    setSelectedSubCategory(filtered[0]);
   };
 
   useEffect(() => {

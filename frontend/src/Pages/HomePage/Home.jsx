@@ -4,42 +4,23 @@ import icon1 from "./Images/icon1.svg";
 import icon2 from "./Images/icon2.svg";
 import icon3 from "./Images/icon3.svg";
 import "./Home.css";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import axios from "axios";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, products: action.payload, loading: false };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+import ProductCard from "../../Components/ProductCard/ProductCard";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Home = () => {
-  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
-    products: [],
-    loading: true,
-    error: "",
-  });
-
-  //const [products, setProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/products");
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-        console.log(result);
+        const { data } = await axios.get(`/api/products/popular`);
+        setPopularProducts(data);
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", payload: error.message });
+        toast.error("Грешка при превземање продукти");
       }
-
-      //setProducts(result.data);
     };
     fetchData();
   }, []);
@@ -95,15 +76,16 @@ const Home = () => {
         <div id="iconTextContainer">{iconMessage}</div>
       </div>
       <div className="container">
-        <h3>Најпродавани производи</h3>
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <p>{products[0]}</p>
-        )}
-        <h3>Најнови производи</h3>
+        <h3 className="mt-4">Најпродавани производи</h3>
+        <div className="d-flex align-items-center">
+          <ArrowBackIosIcon style={{ fontSize: "2.5rem", cursor: "pointer" }} />
+          {popularProducts &&
+            popularProducts.map((p) => <ProductCard key={p._id} product={p} />)}
+          <ArrowForwardIosIcon
+            style={{ fontSize: "2.5rem", cursor: "pointer" }}
+          />
+        </div>
+        <h3 className="mt-4">Најнови производи</h3>
       </div>
     </div>
   );
