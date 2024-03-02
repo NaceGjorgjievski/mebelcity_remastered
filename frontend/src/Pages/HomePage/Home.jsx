@@ -13,11 +13,18 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Home = () => {
   const [popularProducts, setPopularProducts] = useState([]);
+  const [popularPage, setPopularPage] = useState(0);
+
+  const [newestProducts, setNewestProducts] = useState([]);
+  const [newestPage, setNewestPage] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/api/products/popular`);
         setPopularProducts(data);
+        const resp = await axios.get("/api/products/newest");
+        setNewestProducts(resp.data);
       } catch (error) {
         toast.error("Грешка при превземање продукти");
       }
@@ -75,17 +82,61 @@ const Home = () => {
         </div>
         <div id="iconTextContainer">{iconMessage}</div>
       </div>
-      <div className="container">
+      <div className="container mb-5">
         <h3 className="mt-4">Најпродавани производи</h3>
         <div className="d-flex align-items-center">
-          <ArrowBackIosIcon style={{ fontSize: "2.5rem", cursor: "pointer" }} />
-          {popularProducts &&
-            popularProducts.map((p) => <ProductCard key={p._id} product={p} />)}
-          <ArrowForwardIosIcon
-            style={{ fontSize: "2.5rem", cursor: "pointer" }}
-          />
+          <div
+            onClick={() => {
+              setPopularPage(popularPage == 0 ? 2 : popularPage - 1);
+            }}
+          >
+            <ArrowBackIosIcon
+              style={{ fontSize: "2.5rem", cursor: "pointer" }}
+            />
+          </div>
+          <div className="d-flex justify-content-around flex-grow-1">
+            {popularProducts &&
+              popularProducts
+                .slice(popularPage * 4, popularPage * 4 + 4)
+                .map((p) => <ProductCard key={p._id} product={p} />)}
+          </div>
+          <div
+            onClick={() => {
+              setPopularPage(popularPage == 2 ? 0 : popularPage + 1);
+            }}
+          >
+            <ArrowForwardIosIcon
+              style={{ fontSize: "2.5rem", cursor: "pointer" }}
+            />
+          </div>
         </div>
         <h3 className="mt-4">Најнови производи</h3>
+        <div className="d-flex align-items-center">
+          <div
+            onClick={() => {
+              setNewestPage(newestPage == 0 ? 2 : newestPage - 1);
+            }}
+          >
+            <ArrowBackIosIcon
+              style={{ fontSize: "2.5rem", cursor: "pointer" }}
+            />
+          </div>
+          <div className="d-flex justify-content-around flex-grow-1">
+            {newestProducts &&
+              newestProducts
+                .slice(newestPage * 4, newestPage * 4 + 4)
+                .map((p) => <ProductCard key={p._id} product={p} />)}
+          </div>
+          <div
+            onClick={() => {
+              setNewestPage(newestPage == 2 ? 0 : newestPage + 1);
+            }}
+          >
+            <ArrowForwardIosIcon
+              style={{ fontSize: "2.5rem", cursor: "pointer" }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

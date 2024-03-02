@@ -11,6 +11,8 @@ import { getError } from "../../utils";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProductListItem from "./Components/ProductListItem";
+import Button from "react-bootstrap/Button";
+import Pagination from "../../Components/Pagination/Pagination";
 
 const ListProducts = () => {
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const ListProducts = () => {
   const [subCategory, setSubCategory] = useState("all");
   const [order, setOrder] = useState("newest");
   const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(0);
   const [products, setProducts] = useState([]);
 
   const deleteProduct = async (productId) => {
@@ -60,8 +63,8 @@ const ListProducts = () => {
         const productsResponse = await axios.get(
           `/api/products?page=${page}&search=${search}&category=${category}&subCategory=${subCategory}&order=${order}`
         );
-        console.log(category + " " + subCategory);
         setProducts(productsResponse.data.products);
+        setPages(productsResponse.data.pages);
       } catch (error) {
         toast.error(getError(error));
       }
@@ -71,7 +74,7 @@ const ListProducts = () => {
 
   return (
     <Row style={{ width: "100vw" }}>
-      <Col xs={2} style={{ height: "80vh" }}>
+      <Col xs={2}>
         <DashboardMenu />
       </Col>
       <Col>
@@ -179,6 +182,7 @@ const ListProducts = () => {
                   ))}
               </ListGroup>
             </Row>
+            <Pagination page={page} pages={pages} onClick={(p) => setPage(p)} />
           </Col>
         </Row>
       </Col>

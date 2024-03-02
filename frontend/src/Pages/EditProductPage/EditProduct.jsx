@@ -62,10 +62,6 @@ const EditProduct = () => {
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  /*  const clearFields = () => {
-
-  }; */
-
   const submitHandler = async (e) => {
     e.preventDefault();
     let name = document.getElementById("name").value;

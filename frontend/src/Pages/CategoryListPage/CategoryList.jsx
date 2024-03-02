@@ -12,6 +12,7 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ListGroup from "react-bootstrap/ListGroup";
 import CategoryListItem from "./Components/CategoryListItem";
 import SubCategoryListItem from "./Components/SubCategoryListItem";
+import Pagination from "../../Components/Pagination/Pagination";
 
 const CategoryList = () => {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ const CategoryList = () => {
   }, [userInfo, navigate]);
 
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState("");
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(0);
   const [categories, setCategories] = useState([]);
   const [collection, setCollection] = useState([]);
   const [refresh, setRefresh] = useState(true);
@@ -102,6 +104,7 @@ const CategoryList = () => {
           `/api/category/search?page=${page}&search=${search}`
         );
         setCollection(categoryResponse.data.result);
+        setPages(categoryResponse.data.pages);
       } catch (error) {
         toast.error(getError(error));
       }
@@ -190,6 +193,7 @@ const CategoryList = () => {
                   )}
               </ListGroup>
             </Row>
+            <Pagination page={page} pages={pages} onClick={(p) => setPage(p)} />
           </Col>
         </Row>
       </Col>

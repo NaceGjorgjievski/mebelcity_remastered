@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ListProducts from "./Pages/ListProductsPage/ListProducts";
 import EditProduct from "./Pages/EditProductPage/EditProduct";
 import CategoryList from "./Pages/CategoryListPage/CategoryList";
+import ProductDetails from "./Pages/ProductDetailsPage/ProductDetails";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/admin/products" element={<ListProducts />} />
             <Route path="/admin/products/:slug" element={<EditProduct />} />
             <Route path="/admin/categories" element={<CategoryList />} />
+            <Route path="/products/:slug" element={<ProductDetails />} />
           </Routes>
         </main>
         <Footer />

@@ -56,7 +56,7 @@ categoryRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
-    const pageSize = 20;
+    const pageSize = 10;
     const page = query.page || 1;
     const search = query.search;
     const collection = [];

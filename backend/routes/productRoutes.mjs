@@ -116,6 +116,15 @@ productRouter.get(
   })
 );
 
+productRouter.get(
+  "/newest",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find().sort({ createdAt: -1 }).limit(12);
+    if (products) res.status(200).send(products);
+    else res.status(404).send("No products found");
+  })
+);
+
 productRouter.delete("/:id", async (req, res) => {
   const product = await Product.findByIdAndDelete(req.params.id);
   if (!product) return res.status(404).send("Продуктот не е пронајден");
@@ -151,8 +160,18 @@ productRouter.put(
     );
     if (product) res.status(200).send(product);
     else {
-      res.status(404).send({ message: "Product Not Found" });
+      res.status(404).send({ message: "Продуктот не е пронајден" });
     }
   })
 );
+
+productRouter.get("/slug/:slug", async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: "Продуктот не е пронајден" });
+  }
+});
+
 export default productRouter;
