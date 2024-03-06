@@ -11,7 +11,6 @@ import { getError } from "../../utils";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProductListItem from "./Components/ProductListItem";
-import Button from "react-bootstrap/Button";
 import Pagination from "../../Components/Pagination/Pagination";
 
 const ListProducts = () => {
@@ -73,16 +72,16 @@ const ListProducts = () => {
   }, [category, order, page, search, subCategory]);
 
   return (
-    <Row style={{ width: "100vw" }}>
+    <Row style={{ marginRight: "0px" }}>
       <Col xs={2}>
         <DashboardMenu />
       </Col>
       <Col>
-        <Row className="mt-3">
+        <Row className="mt-3" style={{ marginRight: "0px" }}>
           <Col style={{ textAlign: "center" }}>
             <h5>Производи</h5>
 
-            <Row className="mt-4">
+            <Row className="mt-4" style={{ marginRight: "0px" }}>
               <Form
                 id="fff"
                 style={{

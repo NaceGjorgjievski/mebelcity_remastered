@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.mjs";
 import categoryRouter from "./routes/categoryRoutes.mjs";
 import productRouter from "./routes/productRoutes.mjs";
+import orderRouter from "./routes/orderRoutes.mjs";
+import paymentRouter from "./routes/paymentRoutes.mjs";
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/payment/", paymentRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

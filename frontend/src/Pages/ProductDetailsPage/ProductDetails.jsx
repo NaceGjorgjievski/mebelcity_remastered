@@ -1,14 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingCart";
 import Row from "react-bootstrap/esm/Row";
 import { getError } from "../../utils";
 import icon from "./icon3.svg";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import { Store } from "../../Store";
 
 const ProductDetails = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
   const [selectedImage, setSelectedImage] = useState("");
@@ -20,7 +22,16 @@ const ProductDetails = () => {
   const [visibleAssembly, setVisibleAssembly] = useState(false);
   const [visibleSchema, setVisibleSchema] = useState(false);
 
-  const addToCartHandler = () => {};
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
+
+  const addToCartHandler = async () => {
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product, quantity: 1 },
+    });
+    navigate("/cart");
+  };
 
   useEffect(() => {
     const fetchData = async () => {

@@ -6,6 +6,19 @@ import { generateToken, isAuth } from "../utils.js";
 
 const userRouter = express.Router();
 
+userRouter.get(
+  "/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.find({ _id: req.params.id });
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "Корисникот не е пронајден" });
+    }
+  })
+);
+
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {

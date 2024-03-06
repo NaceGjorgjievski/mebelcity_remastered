@@ -13,6 +13,10 @@ import ListProducts from "./Pages/ListProductsPage/ListProducts";
 import EditProduct from "./Pages/EditProductPage/EditProduct";
 import CategoryList from "./Pages/CategoryListPage/CategoryList";
 import ProductDetails from "./Pages/ProductDetailsPage/ProductDetails";
+import CartPage from "./Pages/CartPage/CartPage";
+import AddressPage from "./Pages/AddressPage/AddressPage";
+import PlaceOrder from "./Pages/PlaceOrderPage/PlaceOrder";
+import OrderList from "./Pages/OrderListPage/OrderList";
 
 function App() {
   return (
@@ -30,7 +34,13 @@ function App() {
             <Route path="/admin/products" element={<ListProducts />} />
             <Route path="/admin/products/:slug" element={<EditProduct />} />
             <Route path="/admin/categories" element={<CategoryList />} />
+            <Route path="/admin/orders" element={<OrderList />} />
+            <Route path="/admin/order/:id" element={<PlaceOrder />} />
             <Route path="/products/:slug" element={<ProductDetails />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/shipping" element={<AddressPage />} />
+            <Route path="/placeOrder" element={<PlaceOrder />} />
+            <Route path="/order/:id" element={<PlaceOrder />} />
           </Routes>
         </main>
         <Footer />

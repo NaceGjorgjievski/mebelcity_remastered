@@ -6,3 +6,12 @@
   display: flex;
   align-items: center;
 }
+
+#removeBtnDiv:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.row {
+  margin-right: 0px;
+}

@@ -9,8 +9,16 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import logo from "./logo.png";
 import "./Header.css";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Store } from "../../Store";
+import Badge from "react-bootstrap/Badge";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="white" id="navbar">
       <Container>
@@ -42,9 +50,14 @@ const Header = () => {
             <Container className="d-flex justify-content-between">
               <UserButton />
 
-              <Nav.Link href="#memes">
+              <Nav.Link href="/cart">
                 <span className="flexSpan">
                   <ShoppingCartSharpIcon />
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </Badge>
+                  )}
                 </span>
               </Nav.Link>
             </Container>

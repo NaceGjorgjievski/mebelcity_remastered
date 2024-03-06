@@ -1,0 +1,17 @@
+.div-orb {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.hr-line {
+  width: 30%;
+  opacity: 100%;
+  border: 4px solid;
+}
