@@ -21,6 +21,37 @@ const multipleUpload = upload.fields([
   { name: "schemaImage", maxCount: 1 },
 ]);
 
+productRouter.get(
+  "/search",
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const searchQuery = query.text;
+    if (!searchQuery) {
+      return res.send([]);
+    }
+    const queryFilter = searchQuery && {
+      name: { $regex: searchQuery, $options: "i" },
+    };
+
+    const descriptionFilter = searchQuery && {
+      description: { $regex: searchQuery, $options: "i" },
+    };
+    const slug = searchQuery && {
+      slug: { $regex: searchQuery, $options: "i" },
+    };
+
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: searchQuery, $options: "i" } },
+        { slug: { $regex: searchQuery, $options: "i" } },
+        { description: { $regex: searchQuery, $options: "i" } },
+      ],
+    }).limit(5);
+
+    res.send(products || []);
+  })
+);
+
 productRouter.post(
   "/add",
   multipleUpload,
@@ -57,6 +88,24 @@ productRouter.post(
     if (product)
       res.status(201).send({ message: "New Product Created", product });
     else res.status(404).send({ message: "Грешка при додавање производ" });
+  })
+);
+
+productRouter.get(
+  "/popular",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find().sort({ countInStock: 1 }).limit(12);
+    if (products) res.status(200).send(products);
+    else res.status(404).send("No products found");
+  })
+);
+
+productRouter.get(
+  "/newest",
+  expressAsyncHandler(async (req, res) => {
+    const products = await Product.find().sort({ createdAt: -1 }).limit(12);
+    if (products) res.status(200).send(products);
+    else res.status(404).send("No products found");
   })
 );
 
@@ -108,20 +157,38 @@ productRouter.get(
 );
 
 productRouter.get(
-  "/popular",
+  "/:category",
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find().sort({ countInStock: 1 }).limit(12);
-    if (products) res.status(200).send(products);
-    else res.status(404).send("No products found");
-  })
-);
+    const { query } = req;
+    const order = query.order;
+    const page = query.page || 1;
+    const category = req.params.category;
+    const pageSize = 12;
 
-productRouter.get(
-  "/newest",
-  expressAsyncHandler(async (req, res) => {
-    const products = await Product.find().sort({ createdAt: -1 }).limit(12);
-    if (products) res.status(200).send(products);
-    else res.status(404).send("No products found");
+    const categoryFilter = category ? { category } : {};
+    const subCategoryFilter = category ? { subCategory: category } : {};
+    const sortOrder =
+      order === "lowFirst"
+        ? { price: 1 }
+        : order === "highFirst"
+        ? { price: -1 }
+        : { createdAt: -1 };
+    const products = await Product.find({
+      $or: [categoryFilter, subCategoryFilter],
+    })
+      .sort(sortOrder)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countProducts = await Product.countDocuments({
+      $or: [categoryFilter, subCategoryFilter],
+    });
+    res.send({
+      products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
+    });
   })
 );
 

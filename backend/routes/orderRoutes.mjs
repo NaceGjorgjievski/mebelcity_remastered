@@ -65,6 +65,28 @@ orderRouter.get(
 );
 
 orderRouter.get(
+  "/mine",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const { query } = req;
+    const pageSize = 10;
+    const page = query.page || 1;
+
+    const orders = await Order.find({ user: req.user._id })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countOrders = orders.length;
+    res.send({
+      orders,
+      countOrders,
+      page,
+      pages: Math.ceil(countOrders / pageSize),
+    });
+  })
+);
+
+orderRouter.get(
   "/:id",
   isAuth,
   expressAsyncHandler(async (req, res) => {

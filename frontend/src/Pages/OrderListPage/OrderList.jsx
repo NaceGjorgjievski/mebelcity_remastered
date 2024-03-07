@@ -57,7 +57,7 @@ const OrderList = () => {
       <Col>
         <Row className="mt-3">
           <Col style={{ textAlign: "center" }}>
-            <h5>Категории</h5>
+            <h5>Нарачки</h5>
 
             <Row className="mt-4">
               <Form

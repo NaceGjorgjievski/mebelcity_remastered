@@ -9,15 +9,31 @@ import ShoppingCartSharpIcon from "@mui/icons-material/ShoppingCartSharp";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import logo from "./logo.png";
 import "./Header.css";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../../Store";
 import Badge from "react-bootstrap/Badge";
+import ProductsDropdown from "./Components/ProductsDropdown";
+import { toast } from "react-toastify";
+import { getError } from "../../utils";
+import axios from "axios";
 
 const Header = () => {
-  const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+  const [search, setSearch] = useState("");
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/search?text=${search}`);
+        setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [search]);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="white" id="navbar">
@@ -33,15 +49,7 @@ const Header = () => {
           <Nav className="me-auto">
             <Nav.Link href="/">Почетна</Nav.Link>
             <NavDropdown title="Производи" id="collapsible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+              <ProductsDropdown />
             </NavDropdown>
             <Nav.Link href="/aboutus">За Нас</Nav.Link>
             <Nav.Link href="/contact">Контакти</Nav.Link>
@@ -62,18 +70,51 @@ const Header = () => {
               </Nav.Link>
             </Container>
 
-            <Form className="d-flex">
+            <Form className="d-flex" onSubmit={(e) => e.preventDefault()}>
               <span className="flexSpan">
                 <SearchSharpIcon style={{ marginRight: "-30px", zIndex: 2 }} />
                 <Form.Control
                   type="search"
                   placeholder="Барај..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="me-2"
                   aria-label="Search"
                   id="searchBar"
                 />
               </span>
             </Form>
+            {products.length > 0 && (
+              <div
+                style={{
+                  border: "1px solid black",
+                  position: "absolute",
+                  top: "90px",
+                  backgroundColor: "white",
+                  zIndex: "999",
+                  padding: "10px",
+                }}
+              >
+                {products &&
+                  products.map((product) => (
+                    <a
+                      key={product._id}
+                      href={`/products/${product.slug}`}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <div className="mt-2">
+                        <span className="d-flex justify-content-start gap-3 align-items-center">
+                          <img
+                            src={product.images[0]}
+                            style={{ height: "70px" }}
+                          />
+                          <p>{product.name}</p>
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+              </div>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

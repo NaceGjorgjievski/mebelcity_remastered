@@ -17,6 +17,9 @@ import CartPage from "./Pages/CartPage/CartPage";
 import AddressPage from "./Pages/AddressPage/AddressPage";
 import PlaceOrder from "./Pages/PlaceOrderPage/PlaceOrder";
 import OrderList from "./Pages/OrderListPage/OrderList";
+import OrderHistory from "./Pages/OrderHistoryPage/OrderHistory";
+import Profile from "./Pages/ProfilePage/Profile";
+import ProductsByCategory from "./Pages/ProductByCategoryPage/ProductsByCategory";
 
 function App() {
   return (
@@ -41,6 +44,12 @@ function App() {
             <Route path="/shipping" element={<AddressPage />} />
             <Route path="/placeOrder" element={<PlaceOrder />} />
             <Route path="/order/:id" element={<PlaceOrder />} />
+            <Route path="/orderhistory" element={<OrderHistory />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/products/:category/:subCategory"
+              element={<ProductsByCategory />}
+            />
           </Routes>
         </main>
         <Footer />

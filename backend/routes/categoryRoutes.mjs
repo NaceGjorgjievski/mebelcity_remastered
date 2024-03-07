@@ -163,4 +163,14 @@ categoryRouter.delete("/subcategory/:id", async (req, res) => {
   res.status(200).send(subCategory);
 });
 
+categoryRouter.get("/:slug", async (req, res) => {
+  let category = await SubCategory.findOne({
+    subCategorySlug: req.params.slug,
+  });
+  if (!category) {
+    category = await Category.findOne({ categorySlug: req.params.slug });
+  }
+  res.status(200).send(category);
+});
+
 export default categoryRouter;

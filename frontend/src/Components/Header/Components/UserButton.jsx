@@ -37,7 +37,7 @@ const UserButton = () => {
           Профил
         </NavDropdown.Item>
 
-        {userInfo.role === "customer" && (
+        {userInfo.role === "customer" ? (
           <NavDropdown.Item
             onClick={() => {
               navigate("/orderhistory");
@@ -45,9 +45,7 @@ const UserButton = () => {
           >
             Нарачки
           </NavDropdown.Item>
-        )}
-
-        {userInfo.role === "admin" && (
+        ) : (
           <NavDropdown.Item
             onClick={() => {
               navigate("/admin/addCategory");
@@ -56,7 +54,6 @@ const UserButton = () => {
             Dashboard
           </NavDropdown.Item>
         )}
-
         <NavDropdown.Divider />
         <NavDropdown.Item onClick={signoutHandler}>Одјави се</NavDropdown.Item>
       </NavDropdown>
