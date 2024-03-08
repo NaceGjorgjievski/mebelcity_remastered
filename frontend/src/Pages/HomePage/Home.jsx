@@ -12,6 +12,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Container from "react-bootstrap/esm/Container";
 import { useMediaQuery } from "@mui/material";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 
 const Home = () => {
   const [popularProducts, setPopularProducts] = useState([]);
@@ -21,6 +22,7 @@ const Home = () => {
 
   const [newestProducts, setNewestProducts] = useState([]);
   const [newestPage, setNewestPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,7 @@ const Home = () => {
         setPopularProducts(data);
         const resp = await axios.get("/api/products/newest");
         setNewestProducts(resp.data);
+        setIsLoading(false);
       } catch (error) {
         toast.error("Грешка при превземање продукти");
       }
@@ -102,12 +105,22 @@ const Home = () => {
           )}
           <div className="d-flex justify-content-around flex-grow-1 flex-wrap row-gap-4">
             {popularProducts && isSmallScreen
-              ? popularProducts.map((p) => (
-                  <ProductCard key={p._id} product={p} />
-                ))
+              ? popularProducts.map((p) =>
+                  isLoading ? (
+                    <LoadingBox key={p._id} />
+                  ) : (
+                    <ProductCard key={p._id} product={p} />
+                  )
+                )
               : popularProducts
                   .slice(popularPage * 4, popularPage * 4 + 4)
-                  .map((p) => <ProductCard key={p._id} product={p} />)}
+                  .map((p) =>
+                    isLoading ? (
+                      <LoadingBox key={p._id} />
+                    ) : (
+                      <ProductCard key={p._id} product={p} />
+                    )
+                  )}
           </div>
           {!isSmallScreen && (
             <div
