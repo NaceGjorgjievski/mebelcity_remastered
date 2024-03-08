@@ -9,6 +9,8 @@ import { Store } from "../../Store";
 import { useNavigate, useParams } from "react-router-dom";
 import { getError } from "../../utils";
 import axios from "axios";
+import { useMediaQuery } from "@mui/material";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,6 +29,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     if (!userInfo || !userInfo.role === "admin") {
@@ -47,7 +50,7 @@ const EditProduct = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/products/${slug}`);
+        const result = await axios.get(`/api/products/slug/${slug}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });
@@ -59,7 +62,6 @@ const EditProduct = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
-  const [filteredSubCategories, setFilteredSubCategories] = useState([]);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
   const submitHandler = async (e) => {
@@ -83,8 +85,7 @@ const EditProduct = () => {
         priceAssembly,
         countInStock,
       });
-
-      toast.success("Успешно ажурирање");
+      if (data) toast.success("Успешно ажурирање");
     } catch (err) {
       dispatch({ type: "FETCH_FAIL" });
       toast.error("Грешка");
@@ -93,7 +94,7 @@ const EditProduct = () => {
 
   const updateCurrentSubcategories = (selectedCat) => {
     let filtered = subCategories.filter((s) => s.category === selectedCat);
-    setFilteredSubCategories(filtered);
+    setSelectedSubCategory(filtered[0]);
   };
 
   useEffect(() => {
@@ -110,18 +111,25 @@ const EditProduct = () => {
     fetchData();
   }, []);
 
-  return (
-    <Row style={{ width: "100vw" }}>
-      <Col xs={2} style={{ height: "80vh" }}>
-        <DashboardMenu />
-      </Col>
+  return loading ? (
+    <LoadingBox />
+  ) : error ? (
+    <h3>Настана грешка, ве молиме обидете се повторно</h3>
+  ) : (
+    <Row>
+      {!isSmallScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
+
       <Col>
         <Row className="mt-3">
           <Col style={{ textAlign: "center" }}>
             <h5>Ажурирај Продукт</h5>
             <Form onSubmit={submitHandler} className="newProductFormCointainer">
               <Row className="mt-4">
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Име</Form.Label>
                     <Form.Control
@@ -131,7 +139,7 @@ const EditProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Слуг</Form.Label>
                     <Form.Control
@@ -141,7 +149,7 @@ const EditProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Категорија</Form.Label>
                     <Form.Select
@@ -159,7 +167,7 @@ const EditProduct = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Подкатегорија</Form.Label>
                     <Form.Select
@@ -233,7 +241,12 @@ const EditProduct = () => {
                 </div>
               </Row>
 
-              <Button variant="danger" size="lg" type="submit" className="mt-5">
+              <Button
+                variant="danger"
+                size="lg"
+                type="submit"
+                className="mt-5 mb-5"
+              >
                 Ажурирај
               </Button>
             </Form>

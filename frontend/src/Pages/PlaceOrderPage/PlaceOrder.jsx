@@ -11,6 +11,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MessageBox from "../../Components/MessageBox/MessageBox";
 import { loadStripe } from "@stripe/stripe-js";
 import CartItem from "./Components/CartItem";
+import { useMediaQuery } from "@mui/material";
+import "./PlaceOrder.css";
 
 const PlaceOrder = () => {
   const params = useParams();
@@ -26,6 +28,7 @@ const PlaceOrder = () => {
   const sp = new URLSearchParams(search);
   const orderId = sp.get("order");
   let payment = sp.get("payment");
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   if (payment && payment == "succesful" && localStorage.getItem("cartItems")) {
     try {
@@ -37,7 +40,7 @@ const PlaceOrder = () => {
   }
 
   const deleteOrder = async (orderId) => {
-    const order = axios.delete(`/api/orders/${orderId}`);
+    axios.delete(`/api/orders/${orderId}`);
   };
 
   if (payment && payment == "canceled" && orderId) {
@@ -138,7 +141,7 @@ const PlaceOrder = () => {
 
       const session = response.data;
 
-      const result = await stripe.redirectToCheckout({
+      await stripe.redirectToCheckout({
         sessionId: session.id,
       });
     } catch (error) {
@@ -162,20 +165,14 @@ const PlaceOrder = () => {
   }, [userInfo.token, id]);
 
   return (
-    <div className="container">
+    <div className="container mb-5">
       <OrderSteps step={3} />
       <h3 className="mt-3 mb-5 text-center">
         {order ? `Нарачка ${order._id}` : "Потврди нарачка"}
       </h3>
       <Row className="mb-4">
-        <Col>
-          <Row
-            style={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              padding: "10px",
-            }}
-          >
+        <Col xs={12} sm={12} md={6}>
+          <Row className="orderInfoContainer">
             <h5>Испорака</h5>
             <p>
               <b>Име:</b>{" "}
@@ -218,14 +215,7 @@ const PlaceOrder = () => {
               <a href="/shipping#address">Измени</a>
             )}
           </Row>
-          <Row
-            className="mt-3"
-            style={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              padding: "10px",
-            }}
-          >
+          <Row className="mt-3 orderInfoContainer ">
             <h5>Плаќање</h5>
             <p>
               <b>Начин:</b> {order ? order.paymentMethod : cart.paymentMethod}
@@ -242,14 +232,7 @@ const PlaceOrder = () => {
               <a href="/shipping#paymentMethod">Измени</a>
             )}
           </Row>
-          <Row
-            className="mt-3"
-            style={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              padding: "10px",
-            }}
-          >
+          <Row className="mt-3 orderInfoContainer">
             <h5>Продукти</h5>
             <ListGroup
               variant="success"
@@ -276,16 +259,8 @@ const PlaceOrder = () => {
             {!order && <a href="/cart">Измени</a>}
           </Row>
         </Col>
-        <Col xs={5}>
-          <Row
-            style={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              padding: "10px",
-              width: "95%",
-              margin: "auto",
-            }}
-          >
+        <Col xs={12} sm={12} md={5} className={`${isSmallScreen && "mt-3"}`}>
+          <Row className="orderInfoContainer">
             <h5>Нарачка</h5>
             <ListGroup>
               <ListGroup.Item>
@@ -343,16 +318,7 @@ const PlaceOrder = () => {
             </ListGroup>
           </Row>
           {order && userInfo.role == "admin" && (
-            <Row
-              className="mt-5"
-              style={{
-                border: "1px solid black",
-                borderRadius: "10px",
-                padding: "10px",
-                width: "95%",
-                margin: "auto",
-              }}
-            >
+            <Row className="mt-5 orderInfoContainer">
               <h5>Акции</h5>
 
               <Button
@@ -361,20 +327,14 @@ const PlaceOrder = () => {
               >
                 Потврди нарачка
               </Button>
-              <hr
-                className="mt-2"
-                style={{ color: "black", opacity: "100%" }}
-              />
+              <hr className="mt-2 adminPartHr" />
               <Button
                 disabled={order && order.status !== "shipping"}
                 onClick={() => orderAction("delivery")}
               >
                 Испрати нарачка
               </Button>
-              <hr
-                className="mt-2"
-                style={{ color: "black", opacity: "100%" }}
-              />
+              <hr className="mt-2 adminPartHr" />
               <Button
                 disabled={order && order.status !== "delivery"}
                 onClick={() => orderAction("completed")}

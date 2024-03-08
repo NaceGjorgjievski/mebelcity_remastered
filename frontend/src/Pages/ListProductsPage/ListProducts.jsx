@@ -12,11 +12,15 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProductListItem from "./Components/ProductListItem";
 import Pagination from "../../Components/Pagination/Pagination";
+import { useMediaQuery } from "@mui/material";
 
 const ListProducts = () => {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const isMediumScreen = useMediaQuery("(max-width:920px)");
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
+
   useEffect(() => {
     if (!userInfo || !userInfo.role === "admin") {
       return navigate("/");
@@ -35,7 +39,7 @@ const ListProducts = () => {
 
   const deleteProduct = async (productId) => {
     try {
-      const resp = await axios.delete(`/api/products/${productId}`);
+      await axios.delete(`/api/products/${productId}`);
       setProducts(products.filter((p) => p._id !== productId));
     } catch (err) {
       toast.error(getError(err));
@@ -71,24 +75,26 @@ const ListProducts = () => {
     fetchData();
   }, [category, order, page, search, subCategory]);
 
+  console.log(isSmallScreen);
+
   return (
-    <Row style={{ marginRight: "0px" }}>
-      <Col xs={2}>
-        <DashboardMenu />
-      </Col>
+    <Row>
+      {!isMediumScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
       <Col>
-        <Row className="mt-3" style={{ marginRight: "0px" }}>
-          <Col style={{ textAlign: "center" }}>
+        <Row className="mt-3">
+          <Col className="text-center">
             <h5>Производи</h5>
 
-            <Row className="mt-4" style={{ marginRight: "0px" }}>
+            <Row className="mt-4">
               <Form
                 id="fff"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-around",
-                }}
+                className={`d-flex justify-content-around align-items-center ${
+                  isSmallScreen && "flex-column"
+                }`}
                 onSubmit={(e) => e.preventDefault()}
               >
                 <Form.Group>
@@ -166,8 +172,9 @@ const ListProducts = () => {
                     <Col>Име</Col>
                     <Col>Категорија</Col>
                     <Col>Подкатегорија</Col>
-                    <Col>Залиха</Col>
-                    <Col>Цена</Col>
+                    {!isSmallScreen && <Col>Залиха</Col>}
+                    {!isSmallScreen && <Col>Цена</Col>}
+
                     <Col>Акции</Col>
                   </Row>
                 </ListGroup.Item>

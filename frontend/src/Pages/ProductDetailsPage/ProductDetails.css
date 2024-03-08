@@ -1,0 +1,25 @@
+#navigationMenuSpan,
+#navigationMenuSpan a {
+  color: gray;
+}
+
+.pointable {
+  cursor: pointer;
+}
+
+.customRed {
+  color: #ce0505;
+}
+
+#icon {
+  height: 50px;
+}
+
+#productInfoList > * {
+  cursor: pointer;
+}
+
+#descriptionText {
+  white-space: pre-wrap;
+  text-wrap: balance;
+}

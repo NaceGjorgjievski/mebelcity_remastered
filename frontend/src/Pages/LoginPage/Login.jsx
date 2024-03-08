@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Store } from "../../Store";
 import { getError } from "../../utils";
+import { useMediaQuery } from "@mui/material";
+import Container from "react-bootstrap/esm/Container";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ const Login = () => {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -43,12 +47,11 @@ const Login = () => {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <div className="container">
+    <Container fluid={isSmallScreen}>
       <div className="d-flex flex-column align-items-center justify-content-center">
         <h2 className="text-center mt-5">Најави се</h2>
         <Form
-          className="mt-5"
-          style={{ width: "400px" }}
+          className={`mt-5 ${!isSmallScreen && "form-width"}`}
           onSubmit={submitHandler}
         >
           <Form.Group className="mb-3" controlId="email">
@@ -82,7 +85,7 @@ const Login = () => {
           <ToastContainer />
         </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 

@@ -13,6 +13,7 @@ import { Store } from "../../Store";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getError } from "../../utils";
+import { useMediaQuery } from "@mui/material";
 
 const OrderHistory = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     if (!userInfo) {
@@ -47,7 +49,7 @@ const OrderHistory = () => {
 
   return (
     <Row className="mt-3">
-      <Col style={{ textAlign: "center" }}>
+      <Col className="text-center">
         <h5>Историја на нарачки</h5>
         <Row>
           <ListGroup
@@ -55,7 +57,7 @@ const OrderHistory = () => {
           >
             <ListGroup.Item>
               <Row className="fw-bold">
-                <Col>ID</Col>
+                {!isSmallScreen && <Col>ID</Col>}
                 <Col>Дата</Col>
                 <Col>Статус</Col>
                 <Col>Акции</Col>
@@ -65,7 +67,7 @@ const OrderHistory = () => {
               orders.map((o) => (
                 <ListGroup.Item key={o._id}>
                   <Row>
-                    <Col>{o._id}</Col>
+                    {!isSmallScreen && <Col>{o._id}</Col>}
                     <Col>
                       {new Date(o.createdAt).toLocaleString("en-GB", {
                         timeZone: "CET",

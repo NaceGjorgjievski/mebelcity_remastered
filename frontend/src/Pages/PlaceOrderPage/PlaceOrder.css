@@ -1,0 +1,16 @@
+.orderInfoContainer {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: auto;
+}
+
+.adminPartHr {
+  color: black;
+  opacity: 100%;
+}
+
+#cartItemCard {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}

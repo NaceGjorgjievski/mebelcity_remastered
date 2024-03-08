@@ -1,0 +1,13 @@
+#fff {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+#productsGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 40px;
+  align-items: center;
+}

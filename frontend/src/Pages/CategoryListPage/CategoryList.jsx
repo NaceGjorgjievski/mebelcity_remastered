@@ -13,6 +13,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import CategoryListItem from "./Components/CategoryListItem";
 import SubCategoryListItem from "./Components/SubCategoryListItem";
 import Pagination from "../../Components/Pagination/Pagination";
+import { useMediaQuery } from "@mui/material";
 
 const CategoryList = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const CategoryList = () => {
   const [categories, setCategories] = useState([]);
   const [collection, setCollection] = useState([]);
   const [refresh, setRefresh] = useState(true);
+  const isMediumScreen = useMediaQuery("(max-width:920px)");
 
   const editCategoryHandler = async (
     categoryId,
@@ -126,9 +128,11 @@ const CategoryList = () => {
 
   return (
     <Row style={{ width: "100vw" }}>
-      <Col xs={2}>
-        <DashboardMenu />
-      </Col>
+      {!isMediumScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
       <Col>
         <Row className="mt-3">
           <Col style={{ textAlign: "center" }}>

@@ -27,7 +27,7 @@ function App() {
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <ToastContainer position="bottom-center" limit={1} />
         <Header />
-        <main>
+        <main style={{ marginBottom: "20px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

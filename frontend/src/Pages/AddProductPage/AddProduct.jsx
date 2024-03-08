@@ -9,6 +9,7 @@ import { Store } from "../../Store";
 import { useNavigate } from "react-router-dom";
 import { getError } from "../../utils";
 import axios from "axios";
+import { useMediaQuery } from "@mui/material";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const AddProduct = () => {
   const [images, setImages] = useState([]);
   const [dimensionImage, setDimensionImage] = useState("");
   const [schemaImage, setSchemaImage] = useState("");
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   const clearFields = () => {
     setName("");
@@ -105,10 +107,12 @@ const AddProduct = () => {
   }, []);
 
   return (
-    <Row style={{ width: "100vw" }}>
-      <Col xs={2} style={{ height: "80vh" }}>
-        <DashboardMenu />
-      </Col>
+    <Row>
+      {!isSmallScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
       <Col>
         <Row className="mt-3">
           <Col style={{ textAlign: "center" }}>
@@ -119,7 +123,7 @@ const AddProduct = () => {
               className="newProductFormCointainer"
             >
               <Row className="mt-4">
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Име</Form.Label>
                     <Form.Control
@@ -129,7 +133,7 @@ const AddProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Слуг</Form.Label>
                     <Form.Control
@@ -139,7 +143,7 @@ const AddProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Категорија</Form.Label>
                     <Form.Select
@@ -157,7 +161,7 @@ const AddProduct = () => {
                     </Form.Select>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={3}>
                   <Form.Group>
                     <Form.Label>Подкатегорија</Form.Label>
                     <Form.Select
@@ -228,7 +232,7 @@ const AddProduct = () => {
               </Row>
 
               <Row style={{ marginTop: "20px" }}>
-                <Col>
+                <Col xs={12} sm={4}>
                   <Form.Group style={{ marginTop: "10px" }}>
                     <Form.Label>Слики</Form.Label>
                     <Form.Control
@@ -243,7 +247,7 @@ const AddProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={4}>
                   <Form.Group style={{ marginTop: "10px" }}>
                     <Form.Label>Слика со димензии</Form.Label>
                     <Form.Control
@@ -254,7 +258,7 @@ const AddProduct = () => {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col>
+                <Col xs={12} sm={4}>
                   <Form.Group style={{ marginTop: "10px" }}>
                     <Form.Label>Слика од шема</Form.Label>
                     <Form.Control
@@ -267,7 +271,12 @@ const AddProduct = () => {
                 </Col>
               </Row>
 
-              <Button variant="danger" size="lg" type="submit" className="mt-3">
+              <Button
+                variant="danger"
+                size="lg"
+                type="submit"
+                className="mt-3 mb-5"
+              >
                 Додади
               </Button>
             </Form>

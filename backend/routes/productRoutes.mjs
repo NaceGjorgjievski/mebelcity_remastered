@@ -156,6 +156,24 @@ productRouter.get(
   })
 );
 
+productRouter.get("slug/:slug", async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: "Продуктот не е пронајден" });
+  }
+});
+
+productRouter.get("/slug/:slug", async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
+  if (product) {
+    res.send(product);
+  } else {
+    res.status(404).send({ message: "Продуктот не е пронајден" });
+  }
+});
+
 productRouter.get(
   "/:category",
   expressAsyncHandler(async (req, res) => {
@@ -198,15 +216,6 @@ productRouter.delete("/:id", async (req, res) => {
   res.status(200).send(product);
 });
 
-productRouter.get("/:slug", async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug });
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: "Продуктот не е пронајден" });
-  }
-});
-
 productRouter.put(
   "/edit/:id",
   expressAsyncHandler(async (req, res) => {
@@ -231,14 +240,5 @@ productRouter.put(
     }
   })
 );
-
-productRouter.get("/slug/:slug", async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug });
-  if (product) {
-    res.send(product);
-  } else {
-    res.status(404).send({ message: "Продуктот не е пронајден" });
-  }
-});
 
 export default productRouter;

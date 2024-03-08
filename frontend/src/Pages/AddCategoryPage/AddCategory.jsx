@@ -9,6 +9,7 @@ import { Store } from "../../Store";
 import axios from "axios";
 import { getError } from "../../utils";
 import { toast } from "react-toastify";
+import { useMediaQuery } from "@mui/material";
 
 const AddCategory = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const AddCategory = () => {
     }
   }, [userInfo, navigate]);
 
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
   const [category, setCategory] = useState("");
   const [categorySlug, setCategorySlug] = useState("");
   const [categories, setCategories] = useState([]);
@@ -74,13 +76,15 @@ const AddCategory = () => {
   }, []);
 
   return (
-    <Row style={{ width: "100vw" }}>
-      <Col xs={2} style={{ height: "80vh" }}>
-        <DashboardMenu />
-      </Col>
+    <Row>
+      {!isSmallScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
       <Col>
         <Row className="mt-3">
-          <Col style={{ textAlign: "center" }}>
+          <Col style={{ textAlign: "center" }} xs={12} sm={6}>
             <h5>Додади Категорија</h5>
             <Form style={{ marginTop: "30px" }} onSubmit={addCategoryHandler}>
               <Form.Group controlId="category">
@@ -110,7 +114,7 @@ const AddCategory = () => {
               </Button>
             </Form>
           </Col>
-          <Col style={{ textAlign: "center" }}>
+          <Col className={`text-center ${isSmallScreen && "mt-3"}`}>
             <h5>Додади Подкатегорија</h5>
             <Form
               className="formCointainer"

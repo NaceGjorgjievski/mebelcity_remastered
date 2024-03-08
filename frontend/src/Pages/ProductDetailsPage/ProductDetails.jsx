@@ -3,11 +3,14 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingCart";
 import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
 import { getError } from "../../utils";
 import icon from "./icon3.svg";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Store } from "../../Store";
+import "./ProductDetails.css";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const navigate = useNavigate();
@@ -15,15 +18,13 @@ const ProductDetails = () => {
   const { slug } = params;
   const [selectedImage, setSelectedImage] = useState("");
   const [product, setProduct] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [visibleDescription, setVisibleDescription] = useState(false);
   const [visibleDimension, setVisibleDimension] = useState(false);
   const [visibleAssembly, setVisibleAssembly] = useState(false);
   const [visibleSchema, setVisibleSchema] = useState(false);
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart } = state;
+  const { dispatch: ctxDispatch } = useContext(Store);
 
   const addToCartHandler = async () => {
     ctxDispatch({
@@ -41,7 +42,7 @@ const ProductDetails = () => {
         setSelectedImage(result.data.images[0]);
         setLoading(false);
       } catch (err) {
-        setError(getError(err));
+        toast(getError(err));
       }
     };
     fetchData();
@@ -51,54 +52,31 @@ const ProductDetails = () => {
     <div>Почекајте...</div>
   ) : (
     <div className="mt-3 container d-flex flex-column mb-5">
-      <span style={{ color: "gray" }}>
-        <a href="/" style={{ color: "grey" }}>
-          Почетна
-        </a>{" "}
-        &gt;{" "}
-        <a href="/" style={{ color: "grey" }}>
-          Производи
-        </a>{" "}
-        &gt;
-        <a href="/" style={{ color: "grey" }}>
-          {product.category}
-        </a>{" "}
-        &gt;{" "}
-        <a href="/" style={{ color: "grey" }}>
-          {product.subCategory}
-        </a>{" "}
-        &gt;{" "}
-        <a href={`/products/${product.slug}`} style={{ color: "grey" }}>
-          {product.name}
-        </a>
+      <span id="navigationMenuSpan">
+        <a href="/">Почетна</a> &gt; <a href="/">Производи</a> &gt;
+        <a href="/">{product.category}</a> &gt;{" "}
+        <a href="/">{product.subCategory}</a> &gt;{" "}
+        <a href={`/products/${product.slug}`}>{product.name}</a>
       </span>
-      <div className="container d-flex">
-        <div className="w-50 ">
+      <Row className="container">
+        <Col xs={12} lg={6}>
           <img src={selectedImage} className="w-100 mt-3" />
           <Row className="mt-3 d-flex justify-content-around">
             {product.images.map((i) => (
               <img
                 key={i}
                 src={i}
-                className="w-25"
+                className="w-25 pointable"
                 onClick={() => setSelectedImage(i)}
-                style={{ cursor: "pointer" }}
               />
             ))}
           </Row>
-        </div>
-        <div className="w-50 text-left ms-5">
+        </Col>
+        <Col xs={12} lg={5} className=" text-left">
           <h2 className="text-center">{product.name}</h2>
-          <h2 className="mt-4 fw-bold" style={{ color: "#ce0505" }}>
-            {product.price}ден
-          </h2>
+          <h2 className="mt-4 fw-bold customRed">{product.price}ден</h2>
           <div className="d-flex align-items-center gap-2">
-            <img
-              id="icon"
-              src={icon}
-              alt="10-day-delivery"
-              style={{ height: "50px" }}
-            ></img>
+            <img id="icon" src={icon} alt="10-day-delivery"></img>
             <p className="m-0">Бесплатна достава: 10 дена</p>
           </div>
           <div className="mt-5">
@@ -112,15 +90,13 @@ const ProductDetails = () => {
             </Button>
           </div>
           <div>
-            <ListGroup className="mt-3" style={{ cursor: "pointer" }}>
+            <ListGroup className="mt-3" id="productInfoList">
               <ListGroup.Item
                 onClick={() => setVisibleDescription(!visibleDescription)}
               >
                 Опис
                 {visibleDescription && (
-                  <pre style={{ whiteSpace: "pre-wrap", textWrap: "balanced" }}>
-                    {product.description}
-                  </pre>
+                  <pre id="descriptionText">{product.description}</pre>
                 )}
               </ListGroup.Item>
               {product.dimensionImage != null && (
@@ -129,7 +105,9 @@ const ProductDetails = () => {
                 >
                   Димензии{" "}
                   {visibleDimension && (
-                    <img src={product.dimensionImage} className="w-100" />
+                    <a href={product.dimensionImage}>
+                      <img src={product.dimensionImage} className="w-100" />
+                    </a>
                   )}
                 </ListGroup.Item>
               )}
@@ -147,18 +125,21 @@ const ProductDetails = () => {
               )}
               {product.schemaImage && (
                 <ListGroup.Item
+                  className="mb-4"
                   onClick={() => setVisibleSchema(!visibleSchema)}
                 >
                   Шема за монтажа
                   {visibleSchema && (
-                    <img src={product.schemaImage} className="w-100" />
+                    <a href={product.schemaImage}>
+                      <img src={product.schemaImage} className="w-100" />
+                    </a>
                   )}
                 </ListGroup.Item>
               )}
             </ListGroup>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };

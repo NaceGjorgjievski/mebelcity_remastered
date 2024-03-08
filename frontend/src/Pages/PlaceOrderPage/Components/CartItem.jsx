@@ -1,15 +1,11 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import PropTypes from "prop-types";
 
 const CartItem = ({ product }) => {
   return (
-    <ListGroup.Item
-      style={{
-        borderTopLeftRadius: "0px",
-        borderTopRightRadius: "0px",
-      }}
-    >
+    <ListGroup.Item id="cartItemCard">
       <Row className="fw-bold align-items-center text-center">
         <Col
           xs={6}
@@ -27,6 +23,16 @@ const CartItem = ({ product }) => {
       </Row>
     </ListGroup.Item>
   );
+};
+
+CartItem.propTypes = {
+  product: PropTypes.shape({
+    image: PropTypes.string,
+    images: PropTypes.arrayOf(PropTypes.string),
+    name: PropTypes.string.isRequired,
+    quantity: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default CartItem;

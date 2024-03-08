@@ -58,7 +58,7 @@ const Signup = () => {
         <h2 className="text-center mt-5">Регистрирај се</h2>
         <Form className="mt-5" onSubmit={submitHandler}>
           <Row className="mb-3">
-            <Form.Group as={Col} controlId="firstName">
+            <Form.Group as={Col} md={6} controlId="firstName">
               <Form.Label>Име</Form.Label>
               <Form.Control
                 type="text"

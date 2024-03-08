@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getError } from "../../utils";
-import Col from "react-bootstrap/esm/Col";
 import Row from "react-bootstrap/esm/Row";
 import Form from "react-bootstrap/Form";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import Pagination from "../../Components/Pagination/Pagination";
+import { useMediaQuery } from "@mui/material";
+import "./ProductsByCategory.css";
 
 const ProductsByCategory = () => {
   const params = useParams();
@@ -17,7 +18,8 @@ const ProductsByCategory = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
-  const navigate = useNavigate();
+
+  const isSmallScreen = useMediaQuery("(max-width:536px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,20 +53,16 @@ const ProductsByCategory = () => {
   }, [category, subCategory, order, page, selectedCategory]);
 
   return (
-    <div className="container">
+    <div
+      className={`container d-flex flex-column ${
+        isSmallScreen && "align-items-center"
+      }`}
+    >
       <h2 className="text-center mt-3">
         {selectedCategory.categoryName || selectedCategory.subCategoryName}
       </h2>
-      <Row className="mt-4" style={{ marginRight: "0px" }}>
-        <Form
-          id="fff"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "end",
-          }}
-          onSubmit={(e) => e.preventDefault()}
-        >
+      <Row className="mt-4">
+        <Form id="fff" onSubmit={(e) => e.preventDefault()}>
           <Form.Group>
             <Form.Select
               value={order}
@@ -78,14 +76,7 @@ const ProductsByCategory = () => {
         </Form>
       </Row>
       <Row className="mt-5">
-        <div
-          style={{
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            rowGap: "40px",
-          }}
-        >
+        <div id="productsGrid">
           {products.map((p) => (
             <ProductCard product={p} key={p._id} />
           ))}

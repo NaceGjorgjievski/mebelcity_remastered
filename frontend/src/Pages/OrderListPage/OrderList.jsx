@@ -16,6 +16,7 @@ import PhonePausedIcon from "@mui/icons-material/PhonePaused";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import CheckIcon from "@mui/icons-material/Check";
+import { useMediaQuery } from "@mui/material";
 
 const OrderList = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ const OrderList = () => {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
   const [orders, setOrders] = useState([]);
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const isExtraSmallScreen = useMediaQuery("(max-width:410px)");
 
   useEffect(() => {
     if (!userInfo || !userInfo.role === "admin") {
@@ -50,19 +53,24 @@ const OrderList = () => {
   }, [page, search, status]);
 
   return (
-    <Row style={{ width: "100vw" }}>
-      <Col xs={2}>
-        <DashboardMenu />
-      </Col>
-      <Col>
+    <Row className={`${isSmallScreen && "justify-content-center"}`}>
+      {!isSmallScreen && (
+        <Col xs={2}>
+          <DashboardMenu />
+        </Col>
+      )}
+
+      <Col xs={12} md={10}>
         <Row className="mt-3">
-          <Col style={{ textAlign: "center" }}>
+          <Col className="text-center">
             <h5>Нарачки</h5>
 
             <Row className="mt-4">
               <Form
                 id="fff"
-                className="d-flex align-items-center justify-content-start ms-4"
+                className={`d-flex ${
+                  isExtraSmallScreen && "flex-column"
+                } align-items-center justify-content-start ms-4`}
                 onSubmit={(e) => e.preventDefault()}
               >
                 <Form.Group>
@@ -81,7 +89,7 @@ const OrderList = () => {
                     />
                   </span>
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className={`${isExtraSmallScreen && "mt-3"}`}>
                   <Form.Select
                     value={status}
                     onChange={(e) => {
@@ -98,11 +106,12 @@ const OrderList = () => {
             </Row>
             <Row>
               <ListGroup
-                style={{ width: "95%", margin: "auto", marginTop: "20px" }}
+                style={{ width: "98%" }}
+                className="d-flex justify-content-center mt-4"
               >
                 <ListGroup.Item>
                   <Row className="fw-bold">
-                    <Col>ID</Col>
+                    {!isSmallScreen && <Col>ID</Col>}
                     <Col>Дата</Col>
                     <Col>Статус</Col>
                     <Col>Акции</Col>
@@ -112,7 +121,8 @@ const OrderList = () => {
                   orders.map((o) => (
                     <ListGroup.Item key={o._id}>
                       <Row>
-                        <Col>{o._id}</Col>
+                        {!isSmallScreen && <Col>{o._id}</Col>}
+
                         <Col>
                           {new Date(o.createdAt).toLocaleString("en-GB", {
                             timeZone: "CET",

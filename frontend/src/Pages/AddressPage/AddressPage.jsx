@@ -6,8 +6,11 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Store } from "../../Store";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
+import "./AddressPage.css";
 
 const AddressPage = () => {
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     userInfo,
@@ -73,22 +76,19 @@ const AddressPage = () => {
 
   return (
     <div className="container">
-      <OrderSteps step={2} />
+      {!isSmallScreen && <OrderSteps step={2} />}
+
       <Form className="mt-5" onSubmit={submitHandler}>
         <Row
-          className="mt-5 p-4"
-          style={{
-            width: "60%",
-            margin: "auto",
-            border: "1px solid black",
-            borderRadius: "15px",
-          }}
+          className={`mt-5 p-4 ${
+            isSmallScreen && "w-100"
+          } shippingAddressRow m-auto`}
         >
           <h2 className="text-center">Адреса</h2>
           <h5 className="text-center">Внесете ги вашите податоци</h5>
 
           <Row id="address" className="mb-3 d-flex justify-content-center ">
-            <Form.Group as={Col} md="6" controlId="validationCustom01">
+            <Form.Group as={Col} xs={12} md="6" controlId="validationCustom01">
               <Form.Label>Име</Form.Label>
               <Form.Control
                 required
@@ -151,13 +151,15 @@ const AddressPage = () => {
         </Row>
         <Row
           id="paymentMethod"
-          className="mt-5 p-4"
-          style={{
+          className={`mt-5 p-4 ${
+            isSmallScreen && "w-100"
+          } shippingAddressRow m-auto`}
+          /*   style={{
             width: "60%",
             margin: "auto",
             border: "1px solid black",
             borderRadius: "15px",
-          }}
+          }} */
         >
           <h2 className="text-center">Начин на плаќање</h2>
           <h5 className="text-center">Изберете начин на плаќање</h5>
@@ -195,7 +197,12 @@ const AddressPage = () => {
             margin: "auto",
           }}
         >
-          <Button style={{ fontSize: "20px" }} variant="danger" type="submit">
+          <Button
+            className="mb-5"
+            style={{ fontSize: "20px" }}
+            variant="danger"
+            type="submit"
+          >
             Продолжи
           </Button>
         </Row>

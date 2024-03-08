@@ -6,11 +6,13 @@ import { getError } from "../../../utils";
 import { toast } from "react-toastify";
 import "../Header.css";
 import LoadingBox from "../../LoadingBox/LoadingBox";
+import { useMediaQuery } from "@mui/material";
 
 const ProductsDropdown = () => {
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,11 +33,13 @@ const ProductsDropdown = () => {
     <LoadingBox />
   ) : (
     <div
-      style={{
+      id={`${!isSmallScreen && "dropdownGrid"}`}
+
+      /*  style={{
         display: "grid",
         gridTemplateColumns: "repeat(3, 1fr)",
         width: "700px",
-      }}
+      }} */
     >
       {categories.map((category, index) => (
         <div key={index} style={{ padding: "10px" }}>
