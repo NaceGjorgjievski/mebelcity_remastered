@@ -4,11 +4,13 @@ import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 import { useContext } from "react";
 import { Store } from "../../../Store";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 
 const UserButton = () => {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
@@ -46,12 +48,59 @@ const UserButton = () => {
             Нарачки
           </NavDropdown.Item>
         ) : (
+          !isSmallScreen && (
+            <NavDropdown.Item
+              onClick={() => {
+                navigate("/admin/addCategory");
+              }}
+            >
+              Dashboard
+            </NavDropdown.Item>
+          )
+        )}
+        {isSmallScreen && userInfo.role === "admin" && (
+          <NavDropdown.Item
+            onClick={() => {
+              navigate("/admin/addProduct");
+            }}
+          >
+            Додади нов производ
+          </NavDropdown.Item>
+        )}
+        {isSmallScreen && userInfo.role === "admin" && (
           <NavDropdown.Item
             onClick={() => {
               navigate("/admin/addCategory");
             }}
           >
-            Dashboard
+            Додади категорија
+          </NavDropdown.Item>
+        )}
+        {isSmallScreen && userInfo.role === "admin" && (
+          <NavDropdown.Item
+            onClick={() => {
+              navigate("/admin/products");
+            }}
+          >
+            Производи
+          </NavDropdown.Item>
+        )}
+        {isSmallScreen && userInfo.role === "admin" && (
+          <NavDropdown.Item
+            onClick={() => {
+              navigate("/admin/categories");
+            }}
+          >
+            Категории
+          </NavDropdown.Item>
+        )}
+        {isSmallScreen && userInfo.role === "admin" && (
+          <NavDropdown.Item
+            onClick={() => {
+              navigate("/admin/orders");
+            }}
+          >
+            Нарачки
           </NavDropdown.Item>
         )}
         <NavDropdown.Divider />

@@ -15,11 +15,15 @@ const ProductCard = ({ product }) => {
 
   const buttonClickHandler = (e) => {
     e.stopPropagation();
-    ctxDispatch({
-      type: "CART_ADD_ITEM",
-      payload: { ...product, quantity: 1 },
-    });
-    toast.success("Продуктот е додаден во кошничката");
+    if (product.countInStock > 0) {
+      ctxDispatch({
+        type: "CART_ADD_ITEM",
+        payload: { ...product, quantity: 1 },
+      });
+      toast.success("Продуктот е додаден во кошничката");
+    } else {
+      toast.error("Продуктот го нема на залиха");
+    }
   };
 
   return (

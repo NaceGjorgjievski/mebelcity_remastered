@@ -9,6 +9,7 @@ import { getError } from "../../utils";
 import axios from "axios";
 import { Store } from "../../Store";
 import { useNavigate, useLocation } from "react-router-dom";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,6 +17,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -27,6 +29,7 @@ const Signup = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (password !== confirmPassword) {
       toast.error("Лозинките не се совпаѓаат", { position: "bottom-center" });
       return;
@@ -40,9 +43,11 @@ const Signup = () => {
       });
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
+      setIsLoading(false);
       navigate(redirect || "/");
     } catch (err) {
       toast.error(getError(err), { position: "bottom-center" });
+      setIsLoading(false);
     }
   };
 
@@ -113,7 +118,7 @@ const Signup = () => {
           </Form.Group>
           <div className="d-flex flex-column justify-content-center align-items-center">
             <Button variant="danger" type="submit" size="lg" className="mt-3">
-              Регистрирај се
+              {isLoading ? <LoadingBox /> : "Регистрирај се"}
             </Button>
             <p>
               Имате профил? <a href="/login">Најави се</a>

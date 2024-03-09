@@ -23,15 +23,20 @@ const ProductDetails = () => {
   const [visibleDimension, setVisibleDimension] = useState(false);
   const [visibleAssembly, setVisibleAssembly] = useState(false);
   const [visibleSchema, setVisibleSchema] = useState(false);
+  const [categoryInfo, setCategoryInfo] = useState("");
 
   const { dispatch: ctxDispatch } = useContext(Store);
 
   const addToCartHandler = async () => {
-    ctxDispatch({
-      type: "CART_ADD_ITEM",
-      payload: { ...product, quantity: 1 },
-    });
-    navigate("/cart");
+    if (product.countInStock > 0) {
+      ctxDispatch({
+        type: "CART_ADD_ITEM",
+        payload: { ...product, quantity: 1 },
+      });
+      navigate("/cart");
+    } else {
+      toast.error("Продуктот го нема на залиха");
+    }
   };
 
   useEffect(() => {
@@ -48,15 +53,36 @@ const ProductDetails = () => {
     fetchData();
   }, [slug]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          `/api/category/${product.category}/${product.subCategory}`
+        );
+        setCategoryInfo(data);
+      } catch (err) {
+        console.log(getError(err));
+      }
+    };
+    if (product) fetchData();
+  }, [product]);
+
   return loading ? (
     <div>Почекајте...</div>
   ) : (
     <div className="mt-3 container d-flex flex-column mb-5">
       <span id="navigationMenuSpan">
         <a href="/">Почетна</a> &gt; <a href="/">Производи</a> &gt;
-        <a href="/">{product.category}</a> &gt;{" "}
-        <a href="/">{product.subCategory}</a> &gt;{" "}
-        <a href={`/products/${product.slug}`}>{product.name}</a>
+        <a href={`/products/${categoryInfo.categorySlug}/all`}>
+          {product.category}
+        </a>{" "}
+        &gt;{" "}
+        <a
+          href={`/products/${categoryInfo.categorySlug}/${categoryInfo.subCategorySlug}`}
+        >
+          {product.subCategory}
+        </a>{" "}
+        &gt; <a href={`/products/${product.slug}`}>{product.name}</a>
       </span>
       <Row className="container">
         <Col xs={12} lg={6}>

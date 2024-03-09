@@ -13,15 +13,15 @@ import { useContext, useEffect, useState } from "react";
 import { Store } from "../../Store";
 import Badge from "react-bootstrap/Badge";
 import ProductsDropdown from "./Components/ProductsDropdown";
-import { toast } from "react-toastify";
-import { getError } from "../../utils";
 import axios from "axios";
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { state } = useContext(Store);
+  const { cart } = state;
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
+  const isSmallScreen = useMediaQuery("(max-width:768px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,14 +86,11 @@ const Header = () => {
             </Form>
             {products.length > 0 && (
               <div
-                style={{
-                  border: "1px solid black",
-                  position: "absolute",
-                  top: "90px",
-                  backgroundColor: "white",
-                  zIndex: "999",
-                  padding: "10px",
-                }}
+                id={`${
+                  isSmallScreen
+                    ? "searchedProductsDivMobile"
+                    : "searchedProductsDiv"
+                }`}
               >
                 {products &&
                   products.map((product) => (

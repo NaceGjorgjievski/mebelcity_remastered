@@ -104,23 +104,17 @@ const Home = () => {
             </div>
           )}
           <div className="d-flex justify-content-around flex-grow-1 flex-wrap row-gap-4">
-            {popularProducts && isSmallScreen
-              ? popularProducts.map((p) =>
-                  isLoading ? (
-                    <LoadingBox key={p._id} />
-                  ) : (
-                    <ProductCard key={p._id} product={p} />
-                  )
-                )
-              : popularProducts
-                  .slice(popularPage * 4, popularPage * 4 + 4)
-                  .map((p) =>
-                    isLoading ? (
-                      <LoadingBox key={p._id} />
-                    ) : (
-                      <ProductCard key={p._id} product={p} />
-                    )
-                  )}
+            {isLoading ? (
+              <LoadingBox />
+            ) : popularProducts && isSmallScreen ? (
+              popularProducts.map((p) => (
+                <ProductCard key={p._id} product={p} />
+              ))
+            ) : (
+              popularProducts
+                .slice(popularPage * 4, popularPage * 4 + 4)
+                .map((p) => <ProductCard key={p._id} product={p} />)
+            )}
           </div>
           {!isSmallScreen && (
             <div

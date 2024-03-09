@@ -12,6 +12,7 @@ import MessageBox from "../../Components/MessageBox/MessageBox";
 import { loadStripe } from "@stripe/stripe-js";
 import CartItem from "./Components/CartItem";
 import { useMediaQuery } from "@mui/material";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 import "./PlaceOrder.css";
 
 const PlaceOrder = () => {
@@ -21,6 +22,7 @@ const PlaceOrder = () => {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+  const [isLoading, setIsLoading] = useState(false);
 
   const [order, setOrder] = useState();
 
@@ -106,6 +108,7 @@ const PlaceOrder = () => {
 
   const makePayment = async () => {
     try {
+      setIsLoading(true);
       const stripe = await loadStripe(
         "pk_test_51OqGvpFgFfp0n8H4xSN22yU6bbXx8Wlb7Wn8NxtII085ItpypD1VZxe6HqTLWjCLqY9sb2znHwlyCJJbl138dCem0031e6THXj"
       );
@@ -144,8 +147,11 @@ const PlaceOrder = () => {
       await stripe.redirectToCheckout({
         sessionId: session.id,
       });
+
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
+      setIsLoading(false);
       toast.error("Грешка при плаќање");
     }
   };
@@ -309,7 +315,7 @@ const PlaceOrder = () => {
                       </Button>
                     ) : (
                       <Button variant="danger" onClick={makePayment}>
-                        Плати нарачка
+                        {isLoading ? <LoadingBox /> : "Плати нарачка"}
                       </Button>
                     )}
                   </Row>

@@ -163,6 +163,19 @@ categoryRouter.delete("/subcategory/:id", async (req, res) => {
   res.status(200).send(subCategory);
 });
 
+categoryRouter.get("/:categoryName/:subCategoryName", async (req, res) => {
+  const category = await Category.findOne({
+    categoryName: req.params.categoryName,
+  });
+  const subcategory = await SubCategory.findOne({
+    subCategoryName: req.params.subCategoryName,
+  });
+  res.status(200).send({
+    categorySlug: category.categorySlug || "",
+    subCategorySlug: subcategory.subCategorySlug || "",
+  });
+});
+
 categoryRouter.get("/:slug", async (req, res) => {
   let category = await SubCategory.findOne({
     subCategorySlug: req.params.slug,

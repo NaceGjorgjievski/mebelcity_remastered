@@ -1,7 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Col from "react-bootstrap/esm/Col";
-import Row from "react-bootstrap/esm/Row";
 import { getError } from "../../../utils";
 import { toast } from "react-toastify";
 import "../Header.css";
@@ -32,15 +30,7 @@ const ProductsDropdown = () => {
   return isLoading ? (
     <LoadingBox />
   ) : (
-    <div
-      id={`${!isSmallScreen && "dropdownGrid"}`}
-
-      /*  style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        width: "700px",
-      }} */
-    >
+    <div id={`${!isSmallScreen && "dropdownGrid"}`}>
       {categories.map((category, index) => (
         <div key={index} style={{ padding: "10px" }}>
           <a

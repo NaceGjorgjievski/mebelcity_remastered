@@ -9,13 +9,14 @@ import { Store } from "../../Store";
 import { getError } from "../../utils";
 import { useMediaQuery } from "@mui/material";
 import Container from "react-bootstrap/esm/Container";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 
 const Login = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectInUrl ? redirectInUrl : "/";
-
+  const [isLoading, setIsLoading] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,6 +27,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const { data } = await axios.post("/api/users/signin", {
         email,
@@ -36,6 +38,7 @@ const Login = () => {
       if (data.role === "admin") navigate("/admin/addCategory");
       else navigate(redirect || "/");
     } catch (err) {
+      setIsLoading(false);
       toast.error(getError(err), { position: "bottom-center" });
     }
   };
@@ -76,7 +79,7 @@ const Login = () => {
 
           <div className="d-flex flex-column justify-content-center align-items-center">
             <Button variant="danger" type="submit" size="lg" className="mt-3">
-              Најави се
+              {isLoading ? <LoadingBox /> : "Најави се"}
             </Button>
             <p>
               Нов корисник? <a href="/signup">Регистрирај се</a>

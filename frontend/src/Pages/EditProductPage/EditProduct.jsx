@@ -85,7 +85,7 @@ const EditProduct = () => {
         priceAssembly,
         countInStock,
       });
-      if (data) toast.success("Успешно ажурирање");
+      toast.success("Успешно ажурирање");
     } catch (err) {
       dispatch({ type: "FETCH_FAIL" });
       toast.error("Грешка");

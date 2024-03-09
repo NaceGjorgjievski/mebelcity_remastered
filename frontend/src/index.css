@@ -16,3 +16,7 @@
   margin-right: 0px;
   margin-left: 0px;
 }
+
+.Toastify__toast-container {
+  z-index: 9999;
+}
