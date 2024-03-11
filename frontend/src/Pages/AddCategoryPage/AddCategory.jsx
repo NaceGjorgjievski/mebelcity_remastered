@@ -83,7 +83,7 @@ const AddCategory = () => {
         </Col>
       )}
       <Col>
-        <Row className="mt-3">
+        <Row className="mt-3" style={{ height: "calc(100vh - 120px)" }}>
           <Col style={{ textAlign: "center" }} xs={12} sm={6}>
             <h5>Додади Категорија</h5>
             <Form style={{ marginTop: "30px" }} onSubmit={addCategoryHandler}>
