@@ -1,6 +1,7 @@
 import OrderSteps from "../../Components/OrderSteps/OrderSteps";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../../Store";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -30,7 +31,8 @@ const PlaceOrder = () => {
   const sp = new URLSearchParams(search);
   const orderId = sp.get("order");
   let payment = sp.get("payment");
-  const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const isSmallScreen = useMediaQuery("(max-width:780px)");
+  const isMediumScreen = useMediaQuery("(max-width:992px)");
 
   if (payment && payment == "succesful" && localStorage.getItem("cartItems")) {
     try {
@@ -171,7 +173,7 @@ const PlaceOrder = () => {
   }, [userInfo.token, id]);
 
   return (
-    <div className="container mb-5">
+    <Container fluid={!isSmallScreen && isMediumScreen} className="mb-5">
       <OrderSteps step={3} />
       <h3 className="mt-3 mb-5 text-center">
         {order ? `Нарачка ${order._id}` : "Потврди нарачка"}
@@ -244,11 +246,11 @@ const PlaceOrder = () => {
               variant="success"
               style={{ width: "95%", margin: "auto", marginTop: "20px" }}
             >
-              <ListGroup.Item>
+              <ListGroup.Item className="order-items-container">
                 <Row className="fw-bold text-center">
                   <Col xs={6}>Име</Col>
-                  <Col>Количина</Col>
-                  <Col>Цена</Col>
+                  <Col xs={3}>Количина</Col>
+                  <Col xs={3}>Цена</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup className="mb-3">
@@ -351,7 +353,7 @@ const PlaceOrder = () => {
           )}
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };
 

@@ -14,3 +14,17 @@
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
+
+.order-items-container {
+  padding: 0px;
+}
+
+@media screen and (max-width: 425px) {
+  .order-items-container {
+    font-size: 11px;
+  }
+
+  #cartItemCard {
+    font-size: 11px;
+  }
+}

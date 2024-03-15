@@ -76,8 +76,7 @@ const AddressPage = () => {
 
   return (
     <div className="container">
-      {!isSmallScreen && <OrderSteps step={2} />}
-
+      <OrderSteps step={2} />
       <Form className="mt-5" onSubmit={submitHandler}>
         <Row
           className={`mt-5 p-4 ${
