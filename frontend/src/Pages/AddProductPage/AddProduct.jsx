@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { getError } from "../../utils";
 import axios from "axios";
 import { useMediaQuery } from "@mui/material";
+import LoadingBox from "../../Components/LoadingBox/LoadingBox";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const AddProduct = () => {
   const [dimensionImage, setDimensionImage] = useState("");
   const [schemaImage, setSchemaImage] = useState("");
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const [isLoading, setIsLoading] = useState(false);
 
   const clearFields = () => {
     setName("");
@@ -55,6 +57,7 @@ const AddProduct = () => {
 
   const addProductHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("name", name);
     formData.append("slug", slug);
@@ -72,6 +75,7 @@ const AddProduct = () => {
     try {
       const result = await axios.post("/api/products/add", formData);
       if (result) {
+        setIsLoading(false);
         toast.success("Производот е додаден");
         clearFields();
       }
@@ -277,7 +281,7 @@ const AddProduct = () => {
                 type="submit"
                 className="mt-3 mb-5"
               >
-                Додади
+                {isLoading ? <LoadingBox /> : "Додади"}
               </Button>
             </Form>
           </Col>
