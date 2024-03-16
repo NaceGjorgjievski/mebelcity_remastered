@@ -54,7 +54,10 @@ orderRouter.get(
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
-    const countOrders = orders.length;
+    const countOrders = await Order.countDocuments({
+      ...searchFilter,
+      ...statusFilter,
+    });
     res.send({
       orders,
       countOrders,
